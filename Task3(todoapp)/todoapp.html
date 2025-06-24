@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Modern To-Do App</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: #121212;
+      color: #e0e0e0;
+      display: flex;
+      justify-content: center;
+      padding: 40px 20px;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 600px;
+      width: 100%;
+      background: #1e1e1e;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.4);
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 2rem;
+      color: #fff;
+      margin-bottom: 1.5rem;
+    }
+
+    .task-input {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 25px;
+    }
+
+    .task-input input,
+    .task-input textarea,
+    .task-input select,
+    .task-input button {
+      border: none;
+      border-radius: 10px;
+      padding: 12px;
+      font-size: 1rem;
+      background: #2a2a2a;
+      color: #e0e0e0;
+      box-shadow: inset 1px 1px 2px rgba(0,0,0,0.4),
+                  inset -1px -1px 2px rgba(255,255,255,0.05);
+    }
+
+    .task-input textarea {
+      resize: none;
+      min-height: 60px;
+    }
+
+    .task-input button {
+      background-color: #6200ea;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .task-input button:hover {
+      background-color: #3700b3;
+    }
+
+    /* Custom date input style */
+    .custom-date-input {
+      position: relative;
+      background: #2a2a2a;
+      color: #e0e0e0;
+      padding: 12px;
+      border-radius: 10px;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: inset 1px 1px 2px rgba(0,0,0,0.4),
+                  inset -1px -1px 2px rgba(255,255,255,0.05);
+      user-select: none;
+    }
+
+    .custom-date-input input[type="date"] {
+      position: absolute;
+      left: 0;
+      top: 0;
+      opacity: 0;
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
+    }
+
+    .task-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .task-card {
+      background: #2a2a2a;
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .task-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5);
+    }
+
+    .task-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+
+    .task-desc {
+      font-size: 0.95rem;
+      margin-top: 6px;
+      color: #bbb;
+    }
+
+    .task-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 10px;
+      font-size: 0.85rem;
+      color: #aaa;
+    }
+
+    .badge {
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 0.75rem;
+    }
+
+    .low { background: #4caf50; color: white; }
+    .medium { background: #ffc107; color: black; }
+    .high { background: #f44336; color: white; }
+
+    .actions {
+      margin-top: 10px;
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+    }
+
+    .actions button {
+      background: none;
+      border: none;
+      color: #aaa;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+
+    .actions button:hover {
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>📝 To-Do App</h1>
+    <div class="task-input">
+      <input type="text" id="taskText" placeholder="Task title..." />
+      <textarea id="taskDesc" placeholder="Task description..."></textarea>
+
+      <!-- Custom Date Input -->
+      <div class="custom-date-input" onclick="openDatePicker()">
+        <span id="dateDisplay">Select due date</span>
+        <input type="date" id="taskDate" onchange="updateDateDisplay()" />
+      </div>
+
+      <!-- Priority dropdown with placeholder -->
+      <select id="taskPriority">
+        <option value="" disabled selected>Select priority</option>
+        <option value="low">Low</option>
+        <option value="medium">Medium</option>
+        <option value="high">High</option>
+      </select>
+
+      <button onclick="addTask()">Add Task</button>
+    </div>
+    <div class="task-list" id="taskList"></div>
+  </div>
+
+  <script>
+    let tasks = [];
+
+    function formatDate(dateStr) {
+      if (!dateStr) return 'No due date';
+      return new Date(dateStr).toLocaleDateString();
+    }
+
+    function openDatePicker() {
+      const input = document.getElementById('taskDate');
+      if (input.showPicker) {
+        input.showPicker(); // For browsers supporting showPicker()
+      } else {
+        input.focus(); // fallback
+      }
+    }
+
+    function updateDateDisplay() {
+      const dateInput = document.getElementById('taskDate');
+      const display = document.getElementById('dateDisplay');
+      display.textContent = dateInput.value
+        ? new Date(dateInput.value).toLocaleDateString()
+        : 'Select due date';
+    }
+
+    function addTask() {
+      const text = document.getElementById('taskText').value.trim();
+      const desc = document.getElementById('taskDesc').value.trim();
+      const date = document.getElementById('taskDate').value;
+      const priority = document.getElementById('taskPriority').value;
+
+      if (!text) {
+        alert('Task title is required.');
+        return;
+      }
+      if (!priority) {
+        alert('Please select a task priority.');
+        return;
+      }
+
+      tasks.push({
+        id: Date.now(),
+        text,
+        desc,
+        date,
+        priority,
+        completed: false
+      });
+
+      // Reset inputs
+      document.getElementById('taskText').value = '';
+      document.getElementById('taskDesc').value = '';
+      document.getElementById('taskDate').value = '';
+      document.getElementById('taskPriority').selectedIndex = 0;
+      updateDateDisplay();
+
+      renderTasks();
+    }
+
+    function renderTasks() {
+      const taskList = document.getElementById('taskList');
+      taskList.innerHTML = '';
+
+      tasks.forEach(task => {
+        const card = document.createElement('div');
+        card.className = 'task-card';
+
+        const title = document.createElement('div');
+        title.className = 'task-title';
+        title.textContent = task.text;
+
+        const desc = document.createElement('div');
+        desc.className = 'task-desc';
+        desc.textContent = task.desc || 'No description';
+
+        const meta = document.createElement('div');
+        meta.className = 'task-meta';
+        meta.innerHTML = `
+          <span>Due: ${formatDate(task.date)}</span>
+          <span class="badge ${task.priority}">${task.priority.toUpperCase()}</span>
+        `;
+
+        const actions = document.createElement('div');
+        actions.className = 'actions';
+
+        const completeBtn = document.createElement('button');
+        completeBtn.innerHTML = task.completed ? '↩️' : '✅';
+        completeBtn.title = task.completed ? 'Mark Incomplete' : 'Mark Complete';
+        completeBtn.onclick = () => toggleComplete(task.id);
+
+        const editBtn = document.createElement('button');
+        editBtn.innerHTML = '✏️';
+        editBtn.title = 'Edit Task';
+        editBtn.onclick = () => editTask(task.id);
+
+        const deleteBtn = document.createElement('button');
+        deleteBtn.innerHTML = '🗑️';
+        deleteBtn.title = 'Delete Task';
+        deleteBtn.onclick = () => deleteTask(task.id);
+
+        actions.append(completeBtn, editBtn, deleteBtn);
+        card.append(title, desc, meta, actions);
+        taskList.appendChild(card);
+      });
+    }
+
+    function toggleComplete(id) {
+      const task = tasks.find(t => t.id === id);
+      if (task) {
+        task.completed = !task.completed;
+        renderTasks();
+      }
+    }
+
+    function editTask(id) {
+      const task = tasks.find(t => t.id === id);
+      if (!task) return;
+
+      const newTitle = prompt('Edit title:', task.text);
+      if (newTitle === null || newTitle.trim() === '') return;
+
+      const newDesc = prompt('Edit description:', task.desc || '');
+      if (newDesc === null) return;
+
+      task.text = newTitle.trim();
+      task.desc = newDesc.trim();
+      renderTasks();
+    }
+
+    function deleteTask(id) {
+      tasks = tasks.filter(t => t.id !== id);
+      renderTasks();
+    }
+
+    // Initialize date display on page load
+    updateDateDisplay();
+    renderTasks();
+  </script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Secure Page</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="fade-in">
+    <div class="secure-container">
+  <h2>🔐 Welcome to the Secured Page!</h2>
+  <p>This content is protected.</p>
+  <button class="button" onclick="logout()">Logout</button>
+</div>
+  <script>
+    const user = localStorage.getItem("loggedInUser");
+    if (!user) {
+      alert("❌ Please login to access this page.");
+      window.location.href = "index.html";
+    }
+
+    function logout() {
+      localStorage.removeItem("loggedInUser");
+      alert("👋 Logged out successfully!");
+      window.location.href = "index.html";
+    }
+  </script>
+</body>
+</html>

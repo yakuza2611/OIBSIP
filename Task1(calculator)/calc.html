@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Scientific Calculator</title>
+  <link rel="stylesheet" href="calc.css" />
+</head>
+<body>
+  <div class="container">
+    <div class="calculator">
+      <input type="text" id="display" />
+
+      <!-- Primary Buttons -->
+      <div class="buttons">
+        <button class="clear" onclick="clearAll()">C</button>
+        <button class="operator" onclick="insert('%')">%</button>
+        <button class="backspace" onclick="backspace()">⌫</button>
+        <button id="advBtn" class="adv" onclick="toggleAdvanced()">Adv</button>
+
+        <button class="operator" onclick="insert('*')">*</button>
+        <button onclick="insert('7')">7</button>
+        <button onclick="insert('8')">8</button>
+        <button onclick="insert('9')">9</button>
+
+        <button class="operator" onclick="insert('-')">−</button>
+        <button onclick="insert('4')">4</button>
+        <button onclick="insert('5')">5</button>
+        <button onclick="insert('6')">6</button>
+
+        <button class="operator" onclick="insert('+')">+</button>
+        <button onclick="insert('1')">1</button>
+        <button onclick="insert('2')">2</button>
+        <button onclick="insert('3')">3</button>
+
+        <button class="operator" onclick="insert('/')">/</button>
+        <button onclick="insert('.')">.</button>
+        <button onclick="insert('0')">0</button>
+        <button class="equal" onclick="calculate()">=</button>
+      </div>
+    </div>
+
+    <!-- Advanced Panel -->
+    <div class="advanced" id="advancedPanel">
+      <button onclick="sqrt()">√</button>
+      <button onclick="power2()">x²</button>
+      <button onclick="log10()">log</button>
+      <button onclick="power()">xʸ</button>
+    </div>
+  </div>
+
+  <script>
+    const display = document.getElementById("display");
+    const advancedPanel = document.getElementById("advancedPanel");
+    const advBtn = document.getElementById("advBtn");
+
+    function insert(value) {
+      if (display.value === "Error") {
+        display.value = value;
+      } else {
+        display.value += value;
+      }
+    }
+
+    function calculate() {
+      try {
+        let expression = display.value.replace(/%/g, "/100");
+        display.value = Function('"use strict"; return (' + expression + ')')();
+      } catch {
+        display.value = "Error";
+      }
+    }
+
+    function clearAll() {
+      display.value = "";
+    }
+
+    function backspace() {
+      display.value = display.value === "Error" ? "" : display.value.slice(0, -1);
+    }
+
+    function sqrt() {
+      try {
+        display.value = Math.sqrt(eval(display.value));
+      } catch {
+        display.value = "Error";
+      }
+    }
+
+    function power2() {
+      try {
+        display.value = Math.pow(eval(display.value), 2);
+      } catch {
+        display.value = "Error";
+      }
+    }
+
+    function log10() {
+      try {
+        display.value = Math.log10(eval(display.value));
+      } catch {
+        display.value = "Error";
+      }
+    }
+
+    function power() {
+      display.value = display.value === "Error" ? "" : display.value + "**";
+    }
+
+    function toggleAdvanced() {
+      const isOpen = advancedPanel.classList.toggle("show");
+      advBtn.textContent = isOpen ? "Close" : "Adv";
+    }
+
+    display.addEventListener("keydown", function (e) {
+      if (e.key === "Enter") {
+        calculate();
+      }
+    });
+  </script>
+</body>
+</html>

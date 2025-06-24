@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tribute Page | Bhagat Singh</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="shortcut icon" href="https://i.pinimg.com/originals/b9/ef/1b/b9ef1b5502fa92533037a3b67b4fc4e1.jpg" type="image/x-icon" />
+</head>
+
+<body>
+  <nav class="navbar">
+    <a class="nav-links" href="#earlylife">Early Life</a>
+    <a class="nav-links" href="#freedomstruggle">Freedom Struggle</a>
+    <a class="nav-links" href="#legacy">Legacy</a>
+  </nav>
+
+  <div class="container container1" id="earlylife">
+    <h1 class="title">Bhagat Singh ⭐️</h1>
+    <img id="profilepic" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSkwyq-rEESClmnt6J30HpU8vs_7omDHtiZmkOx25hR-Kl7Eae6Oqluo6VxAhJ0Zf0p-hI&usqp=CAU"
+      alt="Bhagat Singh Image" />
+    <div class="infobox">
+      <h2>Early Life</h2>
+      <p class="para">
+        Bhagat Singh was born on September 28, 1907, in Banga village, Punjab, British India. He grew up in a Sikh family that was deeply patriotic and politically active. From a young age, he was influenced by stories of sacrifice from the Indian freedom struggle, especially those of his uncle Ajit Singh and father Kishan Singh.
+        <br><br>
+        As a teenager, he was deeply disturbed by the Jallianwala Bagh massacre in 1919 and British atrocities, which set him firmly on the path of revolution. He studied European revolutionary movements and believed in the power of organized resistance.
+      </p>
+    </div>
+  </div>
+
+  <hr />
+
+  <div class="container" id="freedomstruggle">
+    <h1>Freedom Struggle</h1>
+    <img id="image1"
+      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQONwrS8eMsRRxJ6s0KN6ZyRurk9jNcFPMIgCmQ1lWOXEBQBQp9uW8XHeMaYu1PxI1EIIQ&usqp=CAU"
+      alt="Bhagat Singh during struggle" />
+    <div class="infobox">
+      <p class="para">
+        Bhagat Singh joined the Hindustan Socialist Republican Association (HSRA), where he aimed to liberate India through armed revolution. In 1928, after the death of Lala Lajpat Rai due to police brutality, Bhagat Singh and his associates killed British officer John Saunders in retaliation.
+        <br><br>
+        In 1929, he and Batukeshwar Dutt threw bombs in the Central Legislative Assembly—not to harm, but to make a statement. His bold court speeches, defiant hunger strike, and fearless demeanor won the hearts of millions across the nation.
+      </p>
+    </div>
+  </div>
+
+  <hr />
+
+  <div class="container" id="legacy">
+    <h1>Legacy</h1>
+    <img id="image2"
+      src="https://www.shutterstock.com/image-photo/new-delhi-india-sep-14-600nw-2363462411.jpg"
+      alt="Bhagat Singh Statue" />
+    <div class="infobox">
+      <p class="para">
+        Bhagat Singh was executed on March 23, 1931, at just 23 years old, along with Rajguru and Sukhdev. Despite his short life, his legacy is immortal. He remains a national hero, a symbol of fearless patriotism, and a youth icon.
+        <br><br>
+        Countless roads, schools, and institutions are named after him. Statues and murals of Bhagat Singh remind the world of his unshakable courage and unwavering dedication to India’s freedom.
+      </p>
+    </div>
+  </div>
+
+  <hr />
+
+  <footer style="text-align: center; padding: 20px; background-color: rgba(0, 0, 0, 0.7); color: white; margin-top: 50px;">
+    <p>Learn more about Bhagat Singh:</p>
+    <a href="https://en.wikipedia.org/wiki/Bhagat_Singh" target="_blank" style="
+      display: inline-block;
+      margin-top: 10px;
+      padding: 10px 20px;
+      background-color: orange;
+      color: black;
+      text-decoration: none;
+      border-radius: 25px;
+      font-weight: bold;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    " onmouseover="this.style.backgroundColor='#ffcc00'" onmouseout="this.style.backgroundColor='orange'">
+      Open Wikipedia →
+    </a>
+  </footer>
+
+  <!-- Back to Top Button -->
+  <button id="topBtn" title="Back to Top">⬆</button>
+
+  <script>
+    const topBtn = document.getElementById("topBtn");
+    window.onscroll = function () {
+      topBtn.style.display = (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) ? "block" : "none";
+    };
+    topBtn.onclick = function () {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    };
+  </script>
+</body>
+</html>
